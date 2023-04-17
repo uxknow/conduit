@@ -12,9 +12,13 @@ export default {
       },
       colors: {
         green: "#5CB85C",
+        darkGreen: '#3d8b3d',
+        montana: '#373a3c',
+        lightGray: '#bbb',
       },
       spacing: {
         navItem: "0.425rem",
+        userBadge: '0.3rem'
       },
       boxShadow: {
         banner:

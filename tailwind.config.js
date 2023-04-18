@@ -4,7 +4,7 @@ export default {
   darkMode: "class",
   theme: {
     screens: {
-      xl: "1200px",
+      xl: "1140px",
     },
     extend: {
       fontFamily: {

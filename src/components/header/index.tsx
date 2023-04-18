@@ -29,10 +29,10 @@ export const Header: FC = () => {
   };
   return (
     <header className="bg-white dark:bg-neutral-900 dark:text-white">
-      <nav className="px-2 py-4">
+      <nav className="px-4 py-2">
         <Container>
           <div className="flex justify-between items-center">
-            <Link to="/" className="mr-8 text-2xl font-titillium text-green">
+            <Link to="/" className="mr-8 pb-2 text-2xl font-titillium text-green">
               conduit
             </Link>
             <div className="flex gap-12 items-center ">

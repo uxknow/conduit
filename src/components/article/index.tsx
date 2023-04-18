@@ -2,52 +2,54 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { FavoriteButton } from "./favorite-button";
 import { TagList } from "./tag-list";
+import { IArticle } from "../../api/dto/articles";
 
-export const Article: FC = () => {
+export const Article: FC<IArticle> = ({
+  title,
+  description,
+  createdAt,
+  author,
+  tagList,
+  favoritesCount,
+}) => {
+  const date = new Date(createdAt).toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <article>
       <div className="border-t border-black/20 py-6">
         <div className="mb-4 font-light flex justify-between">
           <div className="flex gap-userBadge items-center">
-            <Link to={`/@{nickname}`}>
+            <Link to={`/@${author.username}`}>
               <img
-                src="https://api.realworld.io/images/demo-avatar.png"
+                src={author.image}
                 className="h-8 w-8 rounded-full inline-block"
-                alt="avatar"
+                alt={`${author.username} avatar`}
               />
             </Link>
-            <div className="flex flex-col">
+            <div className="flex flex-col font-normal">
               <Link
-                to={`/@{nickname}`}
+                to={`/@${author.username}`}
                 className="leading-5 text-green hover:text-darkGreen hover:underline"
               >
-                Anna Benesona
+                {author.username}
               </Link>
-              <span className="text-xs text-lightGray">December 20, 2023</span>
+              <span className="text-xs text-lightGray">{date}</span>
             </div>
           </div>
-          <FavoriteButton />
+          <FavoriteButton favoritesCount={favoritesCount} />
         </div>
         <Link to={`/@{article}{id}`} className="hover:no-underline hover:text">
-          <h1 className="font-semibold text-2xl text-montana">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus
-            optio ea saepe, commodi laudantium dolores reprehenderit, mollitia
-            facere ipsum fuga.
-          </h1>
-          <p className="mb-4 text-lightGray">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat
-            eaque adipisci assumenda facilis obcaecati repellat praesentium
-            eveniet dicta natus vel doloremque ad, illum illo dolor ducimus.
-            Tenetur fugit ex repellat. Aliquam nulla tempora itaque incidunt
-            asperiores, reiciendis veritatis expedita vitae laborum ad, ipsum
-            quisquam! Fuga dolorum suscipit maiores dicta rem, obcaecati quasi
-            fugit, quibusdam unde dignissimos eaque eveniet temporibus laborum!
-          </p>
+          <h1 className="font-semibold text-2xl text-montana">{title}</h1>
+          <p className="mb-4 text-lightGray">{description}</p>
           <div className="flex items-center justify-between">
             <span className="font-light text-sm text-lightGray">
               Read more...
             </span>
-            <TagList />
+            <TagList tagList={tagList} />
           </div>
         </Link>
       </div>

@@ -12,13 +12,16 @@ export default {
       },
       colors: {
         green: "#5CB85C",
-        darkGreen: '#3d8b3d',
-        montana: '#373a3c',
-        lightGray: '#bbb',
+        darkGreen: "#3d8b3d",
+        montana: "#373a3c",
+        lightGray: "#bbb",
+        bgPopularTag: '#818a91',
+        bgPopularTagHover: '#687077',
+        feedColor: '#aaa'
       },
       spacing: {
         navItem: "0.425rem",
-        userBadge: '0.3rem'
+        userBadge: "0.3rem",
       },
       boxShadow: {
         banner:
@@ -32,5 +35,6 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+  ],
 };

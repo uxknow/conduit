@@ -49,7 +49,7 @@ export const Article: FC<IArticle> = ({
             <span className="font-light text-sm text-lightGray">
               Read more...
             </span>
-            <TagList tagList={tagList} />
+            <TagList tagList={tagList}/>
           </div>
         </Link>
       </div>

@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { Banner } from "./banner";
-import {  HomeContent } from "../../components/home-content";
+import { Banner } from "../../components/banner";
+import { HomeContent } from "../../components/home-content";
 
-export const Home: FC = () => {
+export const HomePage: FC = () => {
   return (
     <main>
       <Banner />

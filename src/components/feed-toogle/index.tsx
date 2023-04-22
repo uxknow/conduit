@@ -1,18 +1,55 @@
 import { FC } from "react";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useParams, useLocation } from "react-router-dom";
 
-export const FeedToogle: FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const tag = searchParams.get('tag')
-  const activeStyle = 'text-green  border-b-2 border-green pointer-events-none'
+interface IFeedProps {
+  globalFeed?: string;
+  tag?: string;
+  myArticles?: string;
+  favoritedArticles?: string;
+}
+
+export const FeedToogle: FC<IFeedProps> = ({
+  globalFeed,
+  tag,
+  myArticles,
+  favoritedArticles,
+}) => {
+  const activeStyle = "text-green  border-b-2 border-green pointer-events-none";
+  const { username } = useParams();
+  const { pathname } = useLocation();
+  const favorites = pathname.includes('favorites')
 
   return (
     <div>
-      <ul className="flex items-center text-feedColor">
-        <li className={`py-2 px-4  ml-0.5 hover:no-underline  max-w-max ${!tag && activeStyle}`}>
-          <NavLink to='/' className='hover:no-underline hover:text-montana'>Global Feed</NavLink>
+      <ul className="flex items-center text-darkGray">
+        <li
+          className={`py-2 px-4  ml-0.5 hover:no-underline  max-w-max ${
+            ((!tag && globalFeed) ||
+              (!favorites && myArticles)) &&
+            activeStyle
+          }`}
+        >
+          <NavLink
+            to={myArticles ? `/${username}` : "/"}
+            className="hover:no-underline hover:text-montana"
+          >
+            {globalFeed || myArticles}
+          </NavLink>
         </li>
-        {tag && <li className={`py-2 px-4 hover:no-underline hover:text-montana ${activeStyle}`}># {tag}</li>}
+        {(tag || favoritedArticles) && (
+          <li
+            className={`py-2 px-4 hover:no-underline hover:text-montana ${
+              (favorites || tag) && activeStyle
+            }`}
+          >
+            <NavLink
+              to={`/${username}/favorites`}
+              className="hover:no-underline hover:text-montana"
+            >
+              {tag && "#"} {tag || favoritedArticles}
+            </NavLink>
+          </li>
+        )}
       </ul>
     </div>
   );

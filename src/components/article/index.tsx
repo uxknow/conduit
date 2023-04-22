@@ -1,58 +1,27 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
-import { FavoriteButton } from "./favorite-button";
-import { TagList } from "./tag-list";
-import { IArticle } from "../../api/dto/articles";
+import { ArticleBanner } from "./article-banner";
+import { TagList } from "../tag-list";
+import { Container } from "../container";
 
-export const Article: FC<IArticle> = ({
-  title,
-  description,
-  createdAt,
-  author,
-  tagList,
-  favoritesCount,
-}) => {
-  const date = new Date(createdAt).toLocaleString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+interface IArticleProps {
+  username: string
+  image: string
+  favoritesCount: number | string
+  createdAt: Date
+  tagList: string[]
+  title: string
+  body: string
+}
 
+export const Article: FC<IArticleProps> = ({username, image, favoritesCount, createdAt, tagList, title, body}) => {
   return (
-    <article>
-      <div className="border-t border-black/20 py-6">
-        <div className="mb-4 font-light flex justify-between">
-          <div className="flex gap-userBadge items-center">
-            <Link to={`/@${author.username}`}>
-              <img
-                src={author.image}
-                className="h-8 w-8 rounded-full inline-block"
-                alt={`${author.username} avatar`}
-              />
-            </Link>
-            <div className="flex flex-col font-normal">
-              <Link
-                to={`/@${author.username}`}
-                className="leading-5 text-green hover:text-darkGreen hover:underline"
-              >
-                {author.username}
-              </Link>
-              <span className="text-xs text-lightGray">{date}</span>
-            </div>
-          </div>
-          <FavoriteButton favoritesCount={favoritesCount} />
-        </div>
-        <Link to={`/@{article}{id}`} className="hover:no-underline hover:text">
-          <h1 className="font-semibold text-2xl text-montana">{title}</h1>
-          <p className="mb-4 text-lightGray">{description}</p>
-          <div className="flex items-center justify-between">
-            <span className="font-light text-sm text-lightGray">
-              Read more...
-            </span>
-            <TagList tagList={tagList}/>
-          </div>
-        </Link>
-      </div>
-    </article>
+    <div>
+      <ArticleBanner username={username} image={image} favoritesCount={favoritesCount} title={title} createdAt={createdAt}/>
+      <Container className="mt-6">
+        <p className="text-xl mb-8 font-sourceSerif">{body}</p>
+        <TagList tagList={tagList} className="[&.text-silver]:text-darkGray  font-semibold"/>
+        <hr className="mt-10 mb-5" />
+      </Container>
+    </div>
   );
 };

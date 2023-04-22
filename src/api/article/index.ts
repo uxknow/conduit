@@ -1,11 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IArticlesResponse } from "./dto/articles";
-import { PAGE_LIMIT } from "./consts";
-import { ITagsResponse } from "./dto/tags";
+import { IArticle, IArticlesResponse } from "../dto/articles";
+import { ITagsResponse } from "../dto/tags";
 
 interface IQueryParams {
-  page: number
-  tag: string | null
+  page: number;
+  limit: number;
+  tag?: string | null;
+  author?: string | null
+  favorited?: string | null
+}
+
+interface Article {
+  article: IArticle
 }
 
 export const articleApi = createApi({
@@ -15,22 +21,34 @@ export const articleApi = createApi({
   }),
   endpoints: (builder) => ({
     getArticles: builder.query<IArticlesResponse, IQueryParams>({
-      query: ({page, tag}) => {
-        const params = new URLSearchParams({limit: PAGE_LIMIT.toString(), offset: (PAGE_LIMIT * page).toString()})
+      query: ({ page, limit, tag, author, favorited }) => {
+        const params = new URLSearchParams({
+          limit: limit.toString(),
+          offset: (limit * page).toString(),
+        });
         if (tag) {
-          params.append('tag', `${tag}`)
+          params.append("tag", `${tag}`);
         }
-        return `/articles?${params.toString()}`
-      }
+        if (author) {
+          params.append('author', `${author}`)
+        }
+        if (favorited) {
+          params.append('favorited', `${favorited}`)
+        }
+
+        return `/articles?${params.toString()}`;
+      },
+    }),
+    getArticle: builder.query<Article, string>({
+      query: (slug) => `/articles/${slug}`
     }),
     getPopularTags: builder.query<ITagsResponse, void>({
-      query: () => '/tags'
-    })
+      query: () => "/tags",
+    }),
   }),
 });
 
-export const { useGetArticlesQuery, useGetPopularTagsQuery } = articleApi;
-
+export const { useGetArticlesQuery, useGetArticleQuery, useGetPopularTagsQuery } = articleApi;
 
 // import { createApi } from '@reduxjs/toolkit/query/react'
 // import type { BaseQueryFn } from '@reduxjs/toolkit/query/react'
@@ -68,7 +86,6 @@ export const { useGetArticlesQuery, useGetPopularTagsQuery } = articleApi;
 //     }
 //   }
 
-
 //   interface IQueryParams {
 //   page: number
 //   tag: string | null
@@ -99,6 +116,5 @@ export const { useGetArticlesQuery, useGetPopularTagsQuery } = articleApi;
 //     })
 //   }),
 // });
-
 
 // export const { useGetArticlesQuery, useGetPopularTagsQuery } = articleApi

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IArticle, IArticlesResponse } from "../dto/articles";
 import { ITagsResponse } from "../dto/tags";
+import { ICommentsDTO } from "../dto/comments";
 
 interface IQueryParams {
   page: number;
@@ -42,13 +43,16 @@ export const articleApi = createApi({
     getArticle: builder.query<Article, string>({
       query: (slug) => `/articles/${slug}`
     }),
+    getComments: builder.query<ICommentsDTO, string>({
+      query: (slug) => `/articles/${slug}/comments`
+    }),
     getPopularTags: builder.query<ITagsResponse, void>({
       query: () => "/tags",
     }),
   }),
 });
 
-export const { useGetArticlesQuery, useGetArticleQuery, useGetPopularTagsQuery } = articleApi;
+export const { useGetArticlesQuery, useGetArticleQuery, useGetCommentsQuery, useGetPopularTagsQuery } = articleApi;
 
 // import { createApi } from '@reduxjs/toolkit/query/react'
 // import type { BaseQueryFn } from '@reduxjs/toolkit/query/react'

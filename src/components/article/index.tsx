@@ -14,11 +14,13 @@ interface IArticleProps {
 }
 
 export const Article: FC<IArticleProps> = ({username, image, favoritesCount, createdAt, tagList, title, body}) => {
+   const newBody = body.split('\\n').join(' ')
+  
   return (
     <div>
       <ArticleBanner username={username} image={image} favoritesCount={favoritesCount} title={title} createdAt={createdAt}/>
       <Container className="mt-6">
-        <p className="text-xl mb-8 font-sourceSerif">{body}</p>
+        <p className="text-xl mb-8 font-sourceSerif">{newBody}</p>
         <TagList tagList={tagList} className="[&.text-silver]:text-darkGray  font-semibold"/>
         <hr className="mt-10 mb-5" />
       </Container>

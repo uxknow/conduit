@@ -34,7 +34,7 @@ export const HomeContent: FC = () => {
     return <Container>Loading...</Container>;
   }
   return (
-    <Container className="flex gap-8">
+    <Container className="flex gap-8 mt-6">
       <div className="w-3/4">
         <FeedToogle
           globalFeed="Global Feed"

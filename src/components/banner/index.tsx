@@ -3,7 +3,7 @@ import { Container } from "../container";
 
 export const Banner: FC = () => {
   return (
-    <div className="bg-green shadow-banner p-8 mb-8">
+    <div className="bg-lightGreen shadow-banner p-8 mb-8">
       <Container className="text-center text-white">
         <h1 className="leading-[66px] mb-2 font-titillium text-bannerLogo drop-shadow-bannerLogo">
           conduit

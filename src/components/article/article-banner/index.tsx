@@ -26,7 +26,7 @@ export const ArticleBanner: FC<IArticleBannerProps> = ({
           image={image}
           favoritesCount={favoritesCount}
           createdAt={createdAt}
-          userBadgeStyle="[&.text-green]:text-white"
+          userBadgeStyle="[&.text-lightGreen]:text-white"
         />
       </Container>
     </div>

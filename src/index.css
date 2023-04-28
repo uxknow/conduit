@@ -8,8 +8,7 @@
   }
 
   a:hover {
-    @apply text-darkGreen;
+    @apply text-darklightGreen;
     @apply underline;
   }
-  
 }

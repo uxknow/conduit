@@ -14,19 +14,18 @@ export const FeedToogle: FC<IFeedProps> = ({
   myArticles,
   favoritedArticles,
 }) => {
-  const activeStyle = "text-green  border-b-2 border-green pointer-events-none";
+  const activeStyle =
+    "text-lightGreen  border-b-2 border-lightGreen pointer-events-none";
   const { username } = useParams();
   const { pathname } = useLocation();
-  const favorites = pathname.includes('favorites')
+  const favorites = pathname.includes("favorites");
 
   return (
     <div>
       <ul className="flex items-center text-darkGray">
         <li
           className={`py-2 px-4  ml-0.5 hover:no-underline  max-w-max ${
-            ((!tag && globalFeed) ||
-              (!favorites && myArticles)) &&
-            activeStyle
+            ((!tag && globalFeed) || (!favorites && myArticles)) && activeStyle
           }`}
         >
           <NavLink

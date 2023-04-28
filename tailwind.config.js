@@ -9,11 +9,13 @@ export default {
     extend: {
       fontFamily: {
         titillium: ["Titillium Web", "sans-serif"],
-        sourceSerif: ['Source Serif Pro', 'serif']
+        sourceSerif: ["Source Serif Pro", "serif"],
       },
       colors: {
-        green: "#5CB85C",
-        darkGreen: "#3d8b3d",
+        lightGreen: "#5CB85C",
+        fruitSalad: '#449d44',
+        darklightGreen: "#3d8b3d",
+        softBlue: "#66afe9",
         whiteSmoke: "#f3f3f3",
         veryLightGray: "#ccc",
         midGray: "#687077",
@@ -21,14 +23,14 @@ export default {
         montana: "#373a3c",
         silver: "#bbb",
         gainsboro: "#ddd",
-        aluminium: "#818a91", 
-        darkCharcoal: '#333',
-        nobel: "#999", 
+        aluminium: "#818a91",
+        darkCharcoal: "#333",
+        nobel: "#999",
       },
       spacing: {
         navItem: "0.425rem",
         userBadge: "0.3rem",
-        profileContainer: '7rem'
+        profileContainer: "7rem",
       },
       boxShadow: {
         banner:

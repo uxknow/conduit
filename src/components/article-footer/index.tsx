@@ -27,15 +27,15 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
         image={image}
         favoritesCount={favoritesCount}
         createdAt={createdAt}
-        userBadgeStyle="text-green"
+        userBadgeStyle="text-lightGreen"
       />
       <div className="mt-12 mb-4 self-start ml-[16%] text-montana">
         <p className="mb-5">
-          <Link to="/login" className="text-green">
+          <Link to="/login" className="text-lightGreen">
             Sign in
           </Link>{" "}
           or{" "}
-          <Link to="/register" className="text-green">
+          <Link to="/register" className="text-lightGreen">
             Sign up
           </Link>{" "}
           to add comments on this article

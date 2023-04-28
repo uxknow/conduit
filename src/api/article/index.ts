@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IArticle, IArticlesResponse } from "../dto/articles";
+import { IArticle, IArticlesDTO } from "../dto/articles";
 import { ITagsResponse } from "../dto/tags";
 import { ICommentsDTO } from "../dto/comments";
 
@@ -21,7 +21,7 @@ export const articleApi = createApi({
     baseUrl: "https://api.realworld.io/api",
   }),
   endpoints: (builder) => ({
-    getArticles: builder.query<IArticlesResponse, IQueryParams>({
+    getArticles: builder.query<IArticlesDTO, IQueryParams>({
       query: ({ page, limit, tag, author, favorited }) => {
         const params = new URLSearchParams({
           limit: limit.toString(),

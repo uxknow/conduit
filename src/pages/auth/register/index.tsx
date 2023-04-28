@@ -1,24 +1,30 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { FieldErrors, FieldValues, UseFormRegister, UseFormReset } from "react-hook-form";
+import { FormInput } from "../../../components/form-input";
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+  UseFormReset,
+} from "react-hook-form";
 import { IUserData } from "..";
 import { AuthMessage } from "../../../components/auth-message";
-import { FormInput } from "../../../components/form-input";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 
-interface ILoginProps<TFieldValues extends FieldValues = IUserData> {
+interface IRegisterProps<TFieldValues extends FieldValues = IUserData> {
   register: UseFormRegister<TFieldValues>;
   errors: FieldErrors<TFieldValues>;
   errorServer: FetchBaseQueryError | undefined;
-  reset: UseFormReset<TFieldValues>
+  reset: UseFormReset<TFieldValues>;
 }
 
-export const LoginPage: FC<ILoginProps> = ({
+export const RegisterPage: FC<IRegisterProps> = ({
   register,
   errors,
   errorServer,
-  reset
+  reset,
 }) => {
+
   const errorServerRegister =
   errorServer && "data" in errorServer
     ? (errorServer.data as Record<string, object>).errors
@@ -30,16 +36,23 @@ export const LoginPage: FC<ILoginProps> = ({
   : "";
   const errorMsg = serverErrMsg ? "" : [...Object.values(errors)][0]?.message;
 
+
   return (
     <>
-      <h2 className="text-[2.5rem]">Sign in</h2>
+      <h2 className="text-[2.5rem]">Sign up</h2>
       <p className="mb-4">
-        <Link to="/register" onClick={() => reset()} className="text-lightGreen">
-          Need an account?
+        <Link to="/login" onClick={() => reset()} className="text-lightGreen">
+          Have an account?
         </Link>
       </p>
       <AuthMessage error={errorMsg || serverErrMsg} />
       <div className="flex flex-col gap-4 max-w-xl">
+        <FormInput
+          type="text"
+          placeholder="Username"
+          {...register("username")}
+          error={(errorMsg?.includes("username") && errorMsg) || ""}
+        />
         <FormInput
           type="email"
           placeholder="Email"

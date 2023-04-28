@@ -1,4 +1,4 @@
-export interface IArticlesResponse {
+export interface IArticlesDTO {
   articles: IArticle[];
   articlesCount: number;
 }

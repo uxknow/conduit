@@ -32,7 +32,10 @@ export const Header: FC = () => {
       <nav className="px-4 py-2">
         <Container>
           <div className="flex justify-between items-center">
-            <Link to="/" className="mr-8 pb-2 text-2xl font-titillium text-green">
+            <Link
+              to="/"
+              className="mr-8 pb-2 text-2xl font-titillium text-lightGreen"
+            >
               conduit
             </Link>
             <div className="flex gap-12 items-center ">

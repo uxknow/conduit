@@ -83,6 +83,7 @@ export const AuthComponent: FC = () => {
           dispatch(getUser(response.data.user));
 
           localStorage.setItem("jwt", response.data.user.token);
+          localStorage.setItem('name', response.data.user.username)
 
           navigate("/");
         }
@@ -97,6 +98,7 @@ export const AuthComponent: FC = () => {
           dispatch(getUser(response.data.user));
 
         localStorage.setItem("jwt", response.data.user.token);
+        localStorage.setItem('name', response.data.user.username)
 
           navigate("/");
         }

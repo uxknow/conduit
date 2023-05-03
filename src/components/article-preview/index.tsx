@@ -12,7 +12,8 @@ export const ArticlePreview: FC<IArticle> = ({
   author,
   tagList,
   favoritesCount,
-  slug
+  slug,
+  favorited
 }) => {
 
   return (
@@ -20,7 +21,7 @@ export const ArticlePreview: FC<IArticle> = ({
       <div className="border-t border-black/20 py-6">
         <div className="mb-4 font-light flex justify-between">
           <UserBadge username={author.username} image={author.image} createdAt={createdAt}/>
-          <FavoriteButton favoritesCount={favoritesCount} />
+          <FavoriteButton favoritesCount={favoritesCount} slug={slug} favorited={favorited}/>
         </div>
         <Link to={`/article/${slug}`} className="hover:no-underline hover:text">
           <h1 className="font-semibold text-2xl text-montana">{title}</h1>

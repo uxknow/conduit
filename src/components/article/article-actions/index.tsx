@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FollowButton } from "../../follow-button";
+import { FollowButton } from "../../follow-edit-button";
 import { FavoriteButton } from "../../favorite-button";
 import { UserBadge } from "../../user-badge";
 
@@ -8,6 +8,8 @@ interface IArticleActionsProps {
   image: string;
   favoritesCount: number | string;
   createdAt: Date;
+  slug: string
+  favorited: boolean
   userBadgeStyle: string;
 }
 
@@ -17,6 +19,8 @@ export const ArticleActions: FC<IArticleActionsProps> = ({
   favoritesCount,
   createdAt,
   userBadgeStyle,
+  slug,
+  favorited
 }) => {
   return (
     <div className="flex items-center gap-6">
@@ -28,7 +32,7 @@ export const ArticleActions: FC<IArticleActionsProps> = ({
       />
       <div className="flex gap-1">
         <FollowButton username={username} />
-        <FavoriteButton favoritesCount={favoritesCount}>
+        <FavoriteButton favoritesCount={favoritesCount} slug={slug} favorited={favorited}>
           Favorite Article
         </FavoriteButton>
       </div>

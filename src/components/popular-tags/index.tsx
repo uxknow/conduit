@@ -3,7 +3,11 @@ import { TagList } from "../tag-list";
 import { useGetPopularTagsQuery } from "../../api/article";
 import { Container } from "../container";
 
-export const PopularTags: FC = () => {
+interface IPopularTagsProps {
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const PopularTags: FC<IPopularTagsProps> = ({setActiveTab}) => {
   const { data, isLoading, isFetching, error } = useGetPopularTagsQuery();
 
   if (error) {
@@ -15,7 +19,7 @@ export const PopularTags: FC = () => {
       {isLoading || isFetching ? (
         "Loading tags..."
       ) : (
-        <TagList tagList={data?.tags || []} tagStyle="DARK" tagAs="a" />
+        <TagList tagList={data?.tags || []} tagStyle="DARK" tagAs="a" setActiveTab={setActiveTab}/>
       )}
     </div>
   );

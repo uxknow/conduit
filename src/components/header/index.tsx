@@ -6,6 +6,7 @@ import { FiEdit } from "react-icons/fi";
 import { useAuth } from "../../hooks/auth";
 import { useAppSelector } from "../../hooks/redux";
 import { UserAvatar } from "./user-avatar";
+import { useGetCurrUserQuery } from "../../api/auth";
 
 interface INavItems {
   title: string | ReactElement[];
@@ -23,6 +24,8 @@ export const Header: FC = () => {
   const isLoggedIn = useAuth();
   const { user } = useAppSelector((state) => state.user);
   const [theme, setTheme] = useState("light");
+
+  const {data = null} = !user && isLoggedIn ? useGetCurrUserQuery() : {}
 
   const authNavItems: INavItems[] = [
     { title: "Home", link: "/", key: "home" },
@@ -50,15 +53,14 @@ export const Header: FC = () => {
       title: [
         <UserAvatar
           key='ptofile'
-          image={user?.image || ""}
-          username={user?.username || ""}
+          image={user?.image || data?.user.image || ''}
+          username={user?.username || data?.user.username || ''}
         />,
       ],
-      link: `/@${user?.username}`,
+      link: `/@${user?.username || data?.user.username}`,
       key: "profile",
     },
   ];
-  console.log(user);
 
   const toggleDarkMode = () => {
     const html = document.querySelector("html");

@@ -9,8 +9,8 @@ interface ICommentsProps {
 export const CommentsList: FC<ICommentsProps> = ({ comments }) => {
   return (
     <>
-      {comments.length !== 0 &&
-        comments.map(({ id, body, createdAt, author }) => (
+      {comments?.length !== 0 &&
+        comments?.map(({ id, body, createdAt, author }) => (
           <Comment
             key={id}
             body={body}

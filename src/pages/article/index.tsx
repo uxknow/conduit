@@ -9,11 +9,9 @@ import { ICommentsDTO } from "../../api/dto/comments";
 export const ArticlePage: FC = () => {
   const { slug } = useParams();
   const { data, isLoading, error } = useGetArticleQuery(slug || "");
-  const {
-    data: commentsData,
-  } = useGetCommentsQuery(slug || "");
+  const { data: commentsData } = useGetCommentsQuery(slug || "");
 
-  const { comments } = commentsData as ICommentsDTO || [];
+  const { comments } = (commentsData as ICommentsDTO) || [];
 
   if (error) {
     return <Container>Error while loading article</Container>;
@@ -32,6 +30,8 @@ export const ArticlePage: FC = () => {
         tagList={data?.article.tagList || []}
         title={data?.article.title || ""}
         body={data?.article.body || ""}
+        slug={slug || ""}
+        favorited={data?.article.favorited as boolean}
       />
       <ArticleFooter
         username={data?.article.author.username || ""}
@@ -39,6 +39,8 @@ export const ArticlePage: FC = () => {
         favoritesCount={`(${String(data?.article.favoritesCount as number)})`}
         createdAt={data?.article.createdAt as Date}
         comments={comments}
+        slug={slug || ""}
+        favorited={data?.article.favorited as boolean}
       />
     </div>
   );

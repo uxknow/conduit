@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
-import { useRegisterUserMutation } from "../../api/auth";
 
 enum TagListStyle {
   DARK = "dark",
@@ -12,6 +11,7 @@ interface ITagListProps {
   tagStyle?: keyof typeof TagListStyle;
   tagAs?: "li" | "a";
   className?: string;
+  setActiveTab?: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const TagList: FC<ITagListProps> = ({
@@ -19,6 +19,7 @@ export const TagList: FC<ITagListProps> = ({
   tagStyle = TagListStyle.LIGHT,
   tagAs = "li",
   className = "",
+  setActiveTab
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -47,6 +48,7 @@ export const TagList: FC<ITagListProps> = ({
               tag.includes(currTag) && "bg-midGray underline"
             }`}
             to={`/?tag=${tag}`}
+            onClick={() => setActiveTab !== undefined && setActiveTab('global')}
           >
             {tag}
           </NavLink>

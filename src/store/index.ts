@@ -16,5 +16,6 @@ export const store = configureStore({
     getDefaultMiddleware().concat(articleApi.middleware, profileApi.middleware, authApi.middleware),
 });
 
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

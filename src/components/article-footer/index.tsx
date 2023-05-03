@@ -11,6 +11,8 @@ interface IArticleFooterProps {
   favoritesCount: number | string;
   createdAt: Date;
   comments: IComment[];
+  slug: string
+  favorited: boolean
 }
 
 export const ArticleFooter: FC<IArticleFooterProps> = ({
@@ -19,6 +21,8 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
   favoritesCount,
   createdAt,
   comments,
+  slug,
+  favorited
 }) => {
   return (
     <Container className="flex flex-col items-center mb-8">
@@ -27,7 +31,9 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
         image={image}
         favoritesCount={favoritesCount}
         createdAt={createdAt}
+        slug={slug}
         userBadgeStyle="text-lightGreen"
+        favorited={favorited}
       />
       <div className="mt-12 mb-4 self-start ml-[16%] text-montana">
         <p className="mb-5">

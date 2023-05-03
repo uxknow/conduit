@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Container } from "../container";
 import { IProfile } from "../../api/dto/profiles";
-import { FollowButton } from "../follow-button";
+import { FollowButton } from "../follow-edit-button";
 
 export const UserInfo: FC<IProfile> = ({ username, bio, image }) => {
   return (
@@ -17,7 +17,7 @@ export const UserInfo: FC<IProfile> = ({ username, bio, image }) => {
           </div>
           <h4 className="font-bold text-2xl mb-2 text-montana">{username}</h4>
           <p className="text-darkGray font-light mb-2">{bio}</p>
-          <FollowButton username={username}/>
+          <FollowButton username={username} />
         </div>
       </Container>
     </div>

@@ -1,14 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { IProfilesDTO } from "../dto/profiles";
+import { baseQuery } from "../base-query";
 
 export const profileApi = createApi({
   reducerPath: "profileApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.realworld.io/api/profiles",
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     getProfile: builder.query<IProfilesDTO, string>({
-      query: (username) => `/${username}`,
+      query: (username) => `/profiles/${username}`,
     }),
   }),
 });

@@ -60,20 +60,20 @@ export const ProfilePage: FC = () => {
       {!isLoadingProfile && (
         <UserInfo {...(dataProfile as IProfilesDTO)?.profile} />
       )}
-      {!isLoadingProfile && (isLoading || isFetching) ? (
-        <Container className="[&.container]:px-profileContainer">
-          Loading articles...
-        </Container>
-      ) : (
+      {
         <Container className="[&.container]:px-profileContainer">
           <FeedToogle
             myArticles="My Articles"
             favoritedArticles="Favorited Articles"
           />
-          {data?.articles.map((article) => (
-            <ArticlePreview key={article.slug} {...article} />
-          ))}
-          {itemsPerPage > 1 && (
+          {!isLoadingProfile && (isLoading || isFetching) ? (
+              <p className="mt-4">Loading articles...</p>
+          ) : (
+            data?.articles.map((article) => (
+              <ArticlePreview key={article.slug} {...article} />
+            ))
+          )}
+          {itemsPerPage > 1 && !isFetching && (
             <Paginate
               page={page}
               itemsPerPage={itemsPerPage}
@@ -81,8 +81,8 @@ export const ProfilePage: FC = () => {
             />
           )}
         </Container>
-      )}
-      {!isLoading && !data?.articles.length && (
+      }
+      {!isFetching && !data?.articles.length && (
         <Container className="[&.container]:px-profileContainer mt-4">
           <p>No articles are here... yet.</p>
         </Container>

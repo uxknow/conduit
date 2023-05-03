@@ -1,5 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { IAuthDTO } from "../dto/auth";
+import { baseQuery } from "../base-query";
 
 interface IAuthData {
   username?: string;
@@ -9,9 +10,7 @@ interface IAuthData {
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.realworld.io/api",
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     registerUser: builder.mutation<IAuthDTO, IAuthData>({
       query: (data) => {
@@ -32,8 +31,11 @@ export const authApi = createApi({
           body,
         };
       }
+    }),
+    getCurrUser: builder.query<IAuthDTO, void>({
+      query: () => '/user'
     })
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = authApi;
+export const { useRegisterUserMutation, useLoginUserMutation, useGetCurrUserQuery } = authApi;

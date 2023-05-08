@@ -29,9 +29,9 @@ export const ProfilePage: FC = () => {
   const { data, isLoading, isFetching, error } = useGetArticlesQuery({
     page,
     limit,
-    author: !pathname.includes("favorites") ? username?.slice(1) : "",
-    favorited: pathname.includes("favorites") ? username?.slice(1) : "",
-  });
+    author: !pathname.includes("favorites") ? username?.slice(1) : undefined,
+    favorited: pathname.includes("favorites") ? username?.slice(1) : undefined,
+  }, {refetchOnMountOrArgChange: pathname.includes('/favorite') ? true : false});
 
   const itemsPerPage = Math.ceil((data?.articlesCount || 0) / limit);
 

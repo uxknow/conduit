@@ -4,6 +4,7 @@ import { HomePage } from "../../pages/home";
 import { ProfilePage } from "../../pages/profile";
 import { ArticlePage } from "../../pages/article";
 import { AuthComponent } from "../../pages/auth";
+import { EditorPage } from "../../pages/editor";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: '/register',
         element: <AuthComponent/>
+      },
+      {
+        path: '/editor',
+        element: <EditorPage/>
       }
     ],
   },

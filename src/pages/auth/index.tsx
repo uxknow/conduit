@@ -4,7 +4,7 @@ import { LoginPage } from "./login";
 import { RegisterPage } from "./register";
 import { Container } from "../../components/container";
 import { useForm } from "react-hook-form";
-import { AuthButton } from "../../components/auth-button";
+import { SubmitButton } from "../../components/submit-button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema, registerSchema } from "../../utils/yup";
 import { useLoginUserMutation, useRegisterUserMutation } from "../../api/auth";
@@ -72,7 +72,7 @@ export const AuthComponent: FC = () => {
   });
 
   const [registerUser, result] = useRegisterUserMutation();
-  const [loginUser, loginResult] = useLoginUserMutation()
+  const [loginUser, loginResult] = useLoginUserMutation();
 
   const submitUserData = async (data: IUserData) => {
     if (pathname === "/register") {
@@ -83,7 +83,7 @@ export const AuthComponent: FC = () => {
           dispatch(getUser(response.data.user));
 
           localStorage.setItem("jwt", response.data.user.token);
-          localStorage.setItem('name', response.data.user.username)
+          localStorage.setItem("name", response.data.user.username);
 
           navigate("/");
         }
@@ -92,18 +92,18 @@ export const AuthComponent: FC = () => {
       }
     } else {
       try {
-        const response = await loginUser(data) as {data: IAuthDTO}
+        const response = (await loginUser(data)) as { data: IAuthDTO };
 
         if (response.data) {
           dispatch(getUser(response.data.user));
 
-        localStorage.setItem("jwt", response.data.user.token);
-        localStorage.setItem('name', response.data.user.username)
+          localStorage.setItem("jwt", response.data.user.token);
+          localStorage.setItem("name", response.data.user.username);
 
           navigate("/");
         }
       } catch (err) {
-        return err
+        return err;
       }
     }
   };
@@ -131,9 +131,9 @@ export const AuthComponent: FC = () => {
             reset={reset}
           />
         )}
-        <AuthButton disabled={isSubmitting}>
+        <SubmitButton disabled={isSubmitting}>
           {pathname === "/login" ? "Sign in" : "Sign up"}
-        </AuthButton>
+        </SubmitButton>
       </form>
     </Container>
   );

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { FollowButton } from "../../follow-edit-button";
-import { FavoriteButton } from "../../favorite-button";
+import { FavoriteDeleteButton } from "../../favorite-delete-btn";
 import { UserBadge } from "../../user-badge";
 
 interface IArticleActionsProps {
@@ -8,8 +8,9 @@ interface IArticleActionsProps {
   image: string;
   favoritesCount: number | string;
   createdAt: Date;
-  slug: string
-  favorited: boolean
+  slug: string;
+  favorited: boolean;
+  following: boolean;
   userBadgeStyle: string;
 }
 
@@ -20,7 +21,8 @@ export const ArticleActions: FC<IArticleActionsProps> = ({
   createdAt,
   userBadgeStyle,
   slug,
-  favorited
+  favorited,
+  following,
 }) => {
   return (
     <div className="flex items-center gap-6">
@@ -31,10 +33,15 @@ export const ArticleActions: FC<IArticleActionsProps> = ({
         className={userBadgeStyle}
       />
       <div className="flex gap-1">
-        <FollowButton username={username} />
-        <FavoriteButton favoritesCount={favoritesCount} slug={slug} favorited={favorited}>
-          Favorite Article
-        </FavoriteButton>
+        <FollowButton username={username} following={following} />
+        <FavoriteDeleteButton
+          favoritesCount={favoritesCount}
+          slug={slug}
+          favorited={favorited}
+          username={username}
+        >
+          {favorited ? "Unfavorite" : "Favorite"} Article
+        </FavoriteDeleteButton>
       </div>
     </div>
   );

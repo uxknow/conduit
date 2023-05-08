@@ -2,6 +2,7 @@ import { FC } from "react";
 import { ArticleBanner } from "./article-banner";
 import { TagList } from "../tag-list";
 import { Container } from "../container";
+import MDEditor from "@uiw/react-md-editor";
 
 interface IArticleProps {
   username: string;
@@ -13,6 +14,7 @@ interface IArticleProps {
   body: string;
   slug: string;
   favorited: boolean
+  following: boolean
 }
 
 export const Article: FC<IArticleProps> = ({
@@ -24,7 +26,8 @@ export const Article: FC<IArticleProps> = ({
   title,
   body,
   slug,
-  favorited
+  favorited,
+  following
 }) => {
   const newBody = body.split("\\n").join(" ");
 
@@ -38,9 +41,10 @@ export const Article: FC<IArticleProps> = ({
         createdAt={createdAt}
         slug={slug}
         favorited={favorited}
+        following={following}
       />
       <Container className="mt-6">
-        <p className="text-xl mb-8 font-sourceSerif">{newBody}</p>
+        <MDEditor.Markdown source={newBody} className="text-lg mb-8 font-sourceSerif"/>
         <TagList
           tagList={tagList}
           className="[&.text-silver]:text-darkGray  font-semibold"

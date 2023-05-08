@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { FavoriteButton } from "../favorite-button";
+import { FavoriteDeleteButton } from "../favorite-delete-btn";
 import { TagList } from "../tag-list";
 import { IArticle } from "../../api/dto/articles";
 import { UserBadge } from "../user-badge";
@@ -13,23 +13,28 @@ export const ArticlePreview: FC<IArticle> = ({
   tagList,
   favoritesCount,
   slug,
-  favorited
+  favorited,
 }) => {
-
   return (
     <article>
       <div className="border-t border-black/20 py-6">
         <div className="mb-4 font-light flex justify-between">
-          <UserBadge username={author.username} image={author.image} createdAt={createdAt}/>
-          <FavoriteButton favoritesCount={favoritesCount} slug={slug} favorited={favorited}/>
+          <UserBadge
+            username={author.username}
+            image={author.image}
+            createdAt={createdAt}
+          />
+          <FavoriteDeleteButton
+            favoritesCount={favoritesCount}
+            slug={slug}
+            favorited={favorited}
+          />
         </div>
         <Link to={`/article/${slug}`} className="hover:no-underline hover:text">
           <h1 className="font-semibold text-2xl text-montana">{title}</h1>
           <p className="mb-4 text-silver">{description}</p>
           <div className="flex items-center justify-between">
-            <span className="font-light text-sm text-silver">
-              Read more...
-            </span>
+            <span className="font-light text-sm text-silver">Read more...</span>
             <TagList tagList={tagList} />
           </div>
         </Link>

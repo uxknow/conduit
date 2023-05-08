@@ -3,7 +3,7 @@ import { Container } from "../container";
 import { IProfile } from "../../api/dto/profiles";
 import { FollowButton } from "../follow-edit-button";
 
-export const UserInfo: FC<IProfile> = ({ username, bio, image }) => {
+export const UserInfo: FC<IProfile> = ({ username, bio, image, following }) => {
   return (
     <div className=" bg-zinc-100 pt-8 pb-4 mb-6">
       <Container className="[&.container]:px-24">
@@ -17,7 +17,7 @@ export const UserInfo: FC<IProfile> = ({ username, bio, image }) => {
           </div>
           <h4 className="font-bold text-2xl mb-2 text-montana">{username}</h4>
           <p className="text-darkGray font-light mb-2">{bio}</p>
-          <FollowButton username={username} />
+          <FollowButton username={username} following={following}/>
         </div>
       </Container>
     </div>

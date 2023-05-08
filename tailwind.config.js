@@ -26,6 +26,7 @@ export default {
         aluminium: "#818a91",
         darkCharcoal: "#333",
         nobel: "#999",
+        FuzzyWuzzyBrown: '#B85C5C'
       },
       spacing: {
         navItem: "0.425rem",

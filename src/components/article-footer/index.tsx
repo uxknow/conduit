@@ -13,6 +13,7 @@ interface IArticleFooterProps {
   comments: IComment[];
   slug: string
   favorited: boolean
+  following: boolean
 }
 
 export const ArticleFooter: FC<IArticleFooterProps> = ({
@@ -22,7 +23,8 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
   createdAt,
   comments,
   slug,
-  favorited
+  favorited,
+  following
 }) => {
   return (
     <Container className="flex flex-col items-center mb-8">
@@ -34,6 +36,7 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
         slug={slug}
         userBadgeStyle="text-lightGreen"
         favorited={favorited}
+        following={following}
       />
       <div className="mt-12 mb-4 self-start ml-[16%] text-montana">
         <p className="mb-5">

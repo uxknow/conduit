@@ -24,7 +24,7 @@ export const HomeContent: FC = () => {
   const { data, error, isLoading, isFetching } = useGetArticlesQuery({
     page,
     limit,
-    tag: searchParams.get("tag"),
+    tag: searchParams.get("tag") || undefined,
   });
 
   const {

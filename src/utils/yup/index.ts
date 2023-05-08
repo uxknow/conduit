@@ -10,3 +10,10 @@ export const loginSchema = yup.object({
   email: yup.string().required(),
   password: yup.string().required()
 })
+
+export const editorSchema = yup.object({
+  title: yup.string().required(),
+  description: yup.string().required(),
+  body: yup.string().required(),
+  tagList: yup.string().required().trim()
+})

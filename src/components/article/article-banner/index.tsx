@@ -10,6 +10,7 @@ interface IArticleBannerProps {
   title: string;
   slug: string
   favorited: boolean
+  following: boolean
 }
 
 export const ArticleBanner: FC<IArticleBannerProps> = ({
@@ -19,7 +20,8 @@ export const ArticleBanner: FC<IArticleBannerProps> = ({
   slug,
   createdAt,
   title,
-  favorited
+  favorited,
+  following
 }) => {
   return (
     <div className="bg-darkCharcoal text-white py-8">
@@ -32,6 +34,7 @@ export const ArticleBanner: FC<IArticleBannerProps> = ({
           createdAt={createdAt}
           slug={slug}
           favorited={favorited}
+          following={following}
           userBadgeStyle="[&.text-lightGreen]:text-white"
         />
       </Container>

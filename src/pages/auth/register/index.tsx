@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { FormInput } from "../../../components/form-input";
+import { FormField } from "../../../components/form-input";
 import {
   FieldErrors,
   FieldValues,
@@ -8,7 +8,7 @@ import {
   UseFormReset,
 } from "react-hook-form";
 import { IUserData } from "..";
-import { AuthMessage } from "../../../components/auth-message";
+import { ErrorMessage } from "../../../components/error-message";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 
 interface IRegisterProps<TFieldValues extends FieldValues = IUserData> {
@@ -24,18 +24,16 @@ export const RegisterPage: FC<IRegisterProps> = ({
   errorServer,
   reset,
 }) => {
-
   const errorServerRegister =
-  errorServer && "data" in errorServer
-    ? (errorServer.data as Record<string, object>).errors
-    : "";
+    errorServer && "data" in errorServer
+      ? (errorServer.data as Record<string, object>).errors
+      : "";
   const serverErrMsg = Object.keys(errorServerRegister).length
-  ? `${Object.keys(errorServerRegister)[0]} ${
-      Object.values(errorServerRegister)[0]
-    }`
-  : "";
+    ? `${Object.keys(errorServerRegister)[0]} ${
+        Object.values(errorServerRegister)[0]
+      }`
+    : "";
   const errorMsg = serverErrMsg ? "" : [...Object.values(errors)][0]?.message;
-
 
   return (
     <>
@@ -45,21 +43,21 @@ export const RegisterPage: FC<IRegisterProps> = ({
           Have an account?
         </Link>
       </p>
-      <AuthMessage error={errorMsg || serverErrMsg} />
+      <ErrorMessage error={errorMsg || serverErrMsg} />
       <div className="flex flex-col gap-4 max-w-xl">
-        <FormInput
+        <FormField
           type="text"
           placeholder="Username"
           {...register("username")}
           error={(errorMsg?.includes("username") && errorMsg) || ""}
         />
-        <FormInput
+        <FormField
           type="email"
           placeholder="Email"
           {...register("email")}
           error={(errorMsg?.includes("email") && errorMsg) || ""}
         />
-        <FormInput
+        <FormField
           type="password"
           placeholder="Password"
           {...register("password")}

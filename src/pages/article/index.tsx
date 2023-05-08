@@ -32,6 +32,7 @@ export const ArticlePage: FC = () => {
         body={data?.article.body || ""}
         slug={slug || ""}
         favorited={data?.article.favorited as boolean}
+        following={data?.article.author.following as boolean}
       />
       <ArticleFooter
         username={data?.article.author.username || ""}
@@ -41,6 +42,7 @@ export const ArticlePage: FC = () => {
         comments={comments}
         slug={slug || ""}
         favorited={data?.article.favorited as boolean}
+        following={data?.article.author.following as boolean}
       />
     </div>
   );

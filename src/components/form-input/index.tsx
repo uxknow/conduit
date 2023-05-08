@@ -1,29 +1,34 @@
-import { ChangeEvent, ComponentPropsWithRef, FC,  forwardRef } from "react";
+import { ComponentPropsWithRef, FC, forwardRef } from "react";
 
 type RefType = HTMLInputElement;
 
-interface IFormInputProps extends ComponentPropsWithRef<'input'> {
-  error: string;
-  onChange: (
-    e: ChangeEvent<HTMLInputElement>
-  ) => void;
+enum inputSize {
+  sm = "small",
+  bg = "big",
 }
 
-export const FormInput: FC<IFormInputProps> = forwardRef<RefType, IFormInputProps>(({
-  error ,
-  onChange,
-  ...rest
-}, ref) => {
-  const borderColor = error ? 'border-red-500 focus:border-red-500' : "focus:border-softBlue"
+interface IFormInputProps extends ComponentPropsWithRef<"input"> {
+  error: string;
+  sizeInput?: keyof typeof inputSize;
+}
+
+export const FormField: FC<IFormInputProps> = forwardRef<
+  RefType,
+  IFormInputProps
+>(({ error, sizeInput = inputSize.bg, ...rest }, ref) => {
+  const borderColor = error
+    ? "border-red-500 focus:border-red-500"
+    : "focus:border-softBlue";
 
   return (
     <div>
       <input
-        onChange={onChange}
         {...rest}
         ref={ref}
-        className={`w-full border rounded py-3 px-6 text-xl focus:outline-none ${borderColor}`}
+        className={`w-full border rounded ${
+          sizeInput === inputSize.bg ? "text-xl py-3 px-6" : "py-2 px-3"
+        } focus:outline-none ${borderColor}`}
       />
     </div>
   );
-})
+});

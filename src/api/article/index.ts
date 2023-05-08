@@ -1,11 +1,19 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { IArticle, IArticlesDTO } from "../dto/articles";
+import {
+  IArticle,
+  IArticlesDTO,
+  ICreateArticle,
+  ICreateArticleDTO,
+} from "../dto/articles";
 import { ITagsResponse } from "../dto/tags";
 import { ICommentsDTO } from "../dto/comments";
 import { baseQuery } from "../base-query";
 import { IFavoriteArticleDTO } from "../dto/favorites";
 import { RootState } from "../../store";
-import { getQueryParamsInState, updateQueryDataArticles } from "../../utils/api";
+import {
+  getQueryParamsInState,
+  updateQueryDataArticles,
+} from "../../utils/api";
 
 interface IQueryParams {
   page: number;
@@ -25,23 +33,33 @@ export const articleApi = createApi({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     getArticles: builder.query<IArticlesDTO, IQueryParams>({
-      query: ({ page, limit, tag, author, favorited }) => {
-        const params = new URLSearchParams({
-          limit: limit.toString(),
-          offset: (limit * page).toString(),
-        });
-        if (tag) {
-          params.append("tag", `${tag}`);
-        }
-        if (author) {
-          params.append("author", `${author}`);
-        }
-        if (favorited) {
-          params.append("favorited", `${favorited}`);
-        }
+      query: ({ page, limit, tag, author, favorited }) => ({
+        url: "/articles",
+        method: "GET",
+        params: {
+          limit,
+          offset: page * limit,
+          tag,
+          author,
+          favorited,
+        },
+        // const params = new URLSearchParams({
+        //   limit: limit.toString(),
+        //   offset: (limit * page).toString(),
+        // });
+        // if (tag) {
+        //   params.append("tag", `${tag}`);
+        // }
+        // if (author) {
+        //   params.append("author", `${author}`);
+        // }
+        // if (favorited) {
+        //   params.append("favorited", `${favorited}`);
+        // }
 
-        return `/articles?${params.toString()}`;
-      },
+        // return `/articles?${params.toString()}`;
+      }),
+
       // providesTags: (result) =>
       // result
       //   ? [
@@ -61,6 +79,7 @@ export const articleApi = createApi({
       query: () => "/tags",
     }),
     getArticlesFeed: builder.query<IArticlesDTO, IQueryParams>({
+      keepUnusedDataFor: 0,
       query: ({ page, limit }) =>
         `/articles/feed?limit=${limit}&offset=${page * limit}`,
     }),
@@ -69,19 +88,38 @@ export const articleApi = createApi({
         url: `/articles/${slug}/favorite`,
         method: "POST",
       }),
+
       invalidatesTags: [{ type: "Post" }],
 
       async onQueryStarted(slug, { dispatch, queryFulfilled, getState }) {
         const { data } = await queryFulfilled;
 
         //находим и изменяем лайки для getArticles
-        const queryParamsArticles = getQueryParamsInState(getState() as RootState, 'getArticles(')
-        const articlesResult = updateQueryDataArticles(dispatch, queryParamsArticles, slug, data, 'getArticles')
+        const queryParamsArticles = await getQueryParamsInState(
+          getState() as RootState,
+          "getArticles("
+        );
+
+        const articlesResult = await updateQueryDataArticles(
+          dispatch,
+          queryParamsArticles,
+          slug,
+          data,
+          "getArticles"
+        );
 
         //находим и изменяем лайки для getArticlesFeed
-        const queryParamsArticlesFeed = getQueryParamsInState(getState() as RootState, 'getArticlesFeed(')
-        const articlesFeedResult = updateQueryDataArticles(dispatch, queryParamsArticlesFeed, slug, data, 'getArticlesFeed')
-
+        const queryParamsArticlesFeed = await getQueryParamsInState(
+          getState() as RootState,
+          "getArticlesFeed("
+        );
+        const articlesFeedResult = await updateQueryDataArticles(
+          dispatch,
+          queryParamsArticlesFeed,
+          slug,
+          data,
+          "getArticlesFeed"
+        );
         try {
           await queryFulfilled;
         } catch {
@@ -97,7 +135,6 @@ export const articleApi = createApi({
         //     }
         //   })
         // );
-
       },
     }),
     unLikeArticle: builder.mutation<IFavoriteArticleDTO, string>({
@@ -105,27 +142,49 @@ export const articleApi = createApi({
         url: `/articles/${slug}/favorite`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Post" , id: arg  },
-      ],
+      invalidatesTags: (result, error, arg) => [{ type: "Post", id: arg }],
       async onQueryStarted(slug, { dispatch, queryFulfilled, getState }) {
-        const { data } = await queryFulfilled 
+        const { data } = await queryFulfilled;
 
-       //находим и изменяем лайки для getArticles
-       const queryParamsArticles = getQueryParamsInState(getState() as RootState, 'getArticles(')
-       const articlesResult = updateQueryDataArticles(dispatch, queryParamsArticles, slug, data, 'getArticles')
-      
-       //находим и изменяем лайки для getArticlesFeed
-       const queryParamsArticlesFeed = getQueryParamsInState(getState() as RootState, 'getArticlesFeed(')
-       const articlesFeedResult = updateQueryDataArticles(dispatch, queryParamsArticlesFeed, slug, data, 'getArticlesFeed')
+        //находим и изменяем лайки для getArticles
+        const queryParamsArticles = getQueryParamsInState(
+          getState() as RootState,
+          "getArticles("
+        );
+        const articlesResult = updateQueryDataArticles(
+          dispatch,
+          queryParamsArticles,
+          slug,
+          data,
+          "getArticles"
+        );
+        //находим и изменяем лайки для getArticlesFeed
+        const queryParamsArticlesFeed = getQueryParamsInState(
+          getState() as RootState,
+          "getArticlesFeed("
+        );
+        const articlesFeedResult = updateQueryDataArticles(
+          dispatch,
+          queryParamsArticlesFeed,
+          slug,
+          data,
+          "getArticlesFeed"
+        );
 
-       try {
-         await queryFulfilled;
-       } catch {
-         articlesResult.undo();
-         articlesFeedResult.undo();
-       }
-      }
+        try {
+          await queryFulfilled;
+        } catch {
+          articlesResult.undo();
+          articlesFeedResult.undo();
+        }
+      },
+    }),
+    createArticle: builder.mutation<ICreateArticleDTO, ICreateArticle>({
+      query: (data) => {
+        const {tagList, ...rest} = data
+        const body = { article: {...rest, tagList: tagList.split(',')} };
+        return { url: "/articles", method: "POST", body };
+      },
     }),
   }),
 });
@@ -138,6 +197,7 @@ export const {
   useGetArticlesFeedQuery,
   useLikeArticleMutation,
   useUnLikeArticleMutation,
+  useCreateArticleMutation
 } = articleApi;
 
 // import { createApi } from '@reduxjs/toolkit/query/react'

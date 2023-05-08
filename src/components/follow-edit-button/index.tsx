@@ -11,11 +11,13 @@ import {
 interface IFollowButtonProps {
   username: string;
   following: boolean;
+  slug?: string
 }
 
 export const FollowButton: FC<IFollowButtonProps> = ({
   username,
   following,
+  slug,
 }) => {
   const isLoggedIn = useAuth();
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ export const FollowButton: FC<IFollowButtonProps> = ({
   const [followUser, result] = useFollowUserMutation();
   const [unfollowUser, unfolllowResult] = useUnfollowUserMutation();
 
+
   const onFollowClick = () => {
     if (!isAuthUser && !following) followUser(username);
     if (!isAuthUser && following) unfollowUser(username);
@@ -33,6 +36,10 @@ export const FollowButton: FC<IFollowButtonProps> = ({
   const navigateToSettings = () => {
     if (isAuthUser && pathname.includes(`${username}`)) navigate("/settings");
   };
+
+  const navigateToEditor = () => {
+    if(isAuthUser && pathname.includes("/article")) navigate(`/editor/${slug}`)
+  }
 
   const followingClass = `${
     following && pathname.includes("/article") && "text-montana opacity-80"
@@ -44,7 +51,7 @@ export const FollowButton: FC<IFollowButtonProps> = ({
   return (
     <button
       onClick={() => {
-        navigateToSettings(), onFollowClick();
+        navigateToSettings(), onFollowClick(), navigateToEditor()
       }}
       disabled={result.isLoading || unfolllowResult.isLoading}
       className={`h-7 flex items-center self-end my-auto text-nobel border border-nobel rounded-sm px-2 py-1 text-sm hover:bg-veryLightGray hover:text-white group focus:-outline-offset-2 active:bg-nobel/70 disabled:opacity-40 ${

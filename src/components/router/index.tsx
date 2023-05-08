@@ -38,7 +38,13 @@ export const router = createBrowserRouter([
       },
       {
         path: '/editor',
-        element: <EditorPage/>
+        element: <EditorPage/>,
+        children: [
+          { 
+            path: ':slug',
+            element: <EditorPage/>
+          }
+        ]
       }
     ],
   },

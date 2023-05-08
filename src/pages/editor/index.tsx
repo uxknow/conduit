@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { FormField } from "../../components/form-input";
 import { useForm, Controller } from "react-hook-form";
 import MDEditor from "@uiw/react-md-editor";
@@ -7,8 +7,12 @@ import { SubmitButton } from "../../components/submit-button";
 import { ErrorMessage } from "../../components/error-message";
 import { editorSchema } from "../../utils/yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateArticleMutation } from "../../api/article";
-import { useNavigate } from "react-router-dom";
+import {
+  useCreateArticleMutation,
+  useGetArticleQuery,
+  useUpdateArticleMutation,
+} from "../../api/article";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface IEditorData {
   title: string;
@@ -19,11 +23,13 @@ interface IEditorData {
 
 export const EditorPage: FC = () => {
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     control,
+    reset
   } = useForm<IEditorData>({
     defaultValues: {
       title: "",
@@ -35,12 +41,35 @@ export const EditorPage: FC = () => {
   });
 
   const [createArticle, result] = useCreateArticleMutation();
+  const [updateArticle] = useUpdateArticleMutation();
+
+  const { slug } = useParams();
+  const { data: dataArticle, isLoading } = useGetArticleQuery(slug || "", {
+    skip: !slug,
+  });
+
+  useEffect(() => {
+    if (!dataArticle) {
+      return;
+    }
+    reset({
+      title: dataArticle.article.title,
+      body: dataArticle.article.body,
+      description: dataArticle.article.description,
+      tagList: dataArticle.article.tagList.join(', ')
+    })
+  }, [dataArticle]);
 
   const onSubmitEditorData = async (data: IEditorData) => {
     try {
-      const { article } = await createArticle(data).unwrap();
-
-      if (article) {
+      if (!slug) {
+        const { article } = await createArticle(data).unwrap();
+        navigate(`/article/${article.slug}`);
+      } else {
+        const { article } = await updateArticle({
+          slug,
+          article: data,
+        }).unwrap();
         navigate(`/article/${article.slug}`);
       }
     } catch (err) {
@@ -58,6 +87,10 @@ export const EditorPage: FC = () => {
   const errorMsg = serverErrMsg
     ? ""
     : (Object.values(errors)?.[0]?.message as string);
+
+  if (slug && isLoading) {
+    return <Container>Loading...</Container>;
+  }
 
   return (
     <Container className="max-w-3xl	 mt-6">

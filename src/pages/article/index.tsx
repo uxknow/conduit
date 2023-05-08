@@ -8,7 +8,7 @@ import { ICommentsDTO } from "../../api/dto/comments";
 
 export const ArticlePage: FC = () => {
   const { slug } = useParams();
-  const { data, isLoading, error } = useGetArticleQuery(slug || "");
+  const { data, isLoading, error } = useGetArticleQuery(slug || "", {refetchOnMountOrArgChange: true});
   const { data: commentsData } = useGetCommentsQuery(slug || "");
 
   const { comments } = (commentsData as ICommentsDTO) || [];

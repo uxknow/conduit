@@ -33,7 +33,7 @@ export const ArticleActions: FC<IArticleActionsProps> = ({
         className={userBadgeStyle}
       />
       <div className="flex gap-1">
-        <FollowButton username={username} following={following} />
+        <FollowButton username={username} following={following} slug={slug}/>
         <FavoriteDeleteButton
           favoritesCount={favoritesCount}
           slug={slug}

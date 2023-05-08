@@ -1,10 +1,6 @@
+import { ICreateArticleDTO } from "./../dto/articles/index";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import {
-  IArticle,
-  IArticlesDTO,
-  ICreateArticle,
-  ICreateArticleDTO,
-} from "../dto/articles";
+import { IArticle, IArticlesDTO, ICreateArticle } from "../dto/articles";
 import { ITagsResponse } from "../dto/tags";
 import { ICommentsDTO } from "../dto/comments";
 import { baseQuery } from "../base-query";
@@ -25,6 +21,11 @@ interface IQueryParams {
 
 interface Article {
   article: IArticle;
+}
+
+interface IUpdateArticle {
+  slug: string;
+  article: ICreateArticle;
 }
 
 export const articleApi = createApi({
@@ -181,9 +182,16 @@ export const articleApi = createApi({
     }),
     createArticle: builder.mutation<ICreateArticleDTO, ICreateArticle>({
       query: (data) => {
-        const {tagList, ...rest} = data
-        const body = { article: {...rest, tagList: tagList.split(',')} };
+        const { tagList, ...rest } = data;
+        const body = { article: { ...rest, tagList: tagList?.split(",") } };
         return { url: "/articles", method: "POST", body };
+      },
+    }),
+    updateArticle: builder.mutation<ICreateArticleDTO, IUpdateArticle>({
+      query: ({ slug, article }) => {
+        const { tagList, ...rest } = article;
+        const body = { article: { ...rest, tagList: tagList?.split(",") } };
+        return { url: `/articles/${slug}`, method: "PUT", body };
       },
     }),
   }),
@@ -197,7 +205,8 @@ export const {
   useGetArticlesFeedQuery,
   useLikeArticleMutation,
   useUnLikeArticleMutation,
-  useCreateArticleMutation
+  useCreateArticleMutation,
+  useUpdateArticleMutation,
 } = articleApi;
 
 // import { createApi } from '@reduxjs/toolkit/query/react'

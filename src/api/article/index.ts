@@ -194,6 +194,12 @@ export const articleApi = createApi({
         return { url: `/articles/${slug}`, method: "PUT", body };
       },
     }),
+    deleteArticle: builder.mutation<void, string>({
+      query: (slug) => ({
+        url: `/articles/${slug}`,
+        method: 'DELETE'
+      })
+    })
   }),
 });
 
@@ -207,6 +213,7 @@ export const {
   useUnLikeArticleMutation,
   useCreateArticleMutation,
   useUpdateArticleMutation,
+  useDeleteArticleMutation
 } = articleApi;
 
 // import { createApi } from '@reduxjs/toolkit/query/react'

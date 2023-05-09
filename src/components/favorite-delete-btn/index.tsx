@@ -31,9 +31,9 @@ export const FavoriteDeleteButton: FC<IFavoriteDeleteButtonProps> = ({
   const [unLikeArticle, res] = useUnLikeArticleMutation();
   const [deleteArticle, resultDelete] = useDeleteArticleMutation();
 
-  const liked = favorited ? "text-white bg-lightGreen" : "";
+  const liked = favorited ? "text-white bg-lightGreen hover:bg-darklightGreen" : "";
   const likeBtnClass =
-    "text-lightGreen border-lightGreen hover:bg-lightGreen focus:bg-lightGreen disabled:pointer-events-none";
+    `text-lightGreen border-lightGreen ${!favorited && 'hover:bg-lightGreen'} focus:bg-lightGreen disabled:pointer-events-none`;
   const deleteBtnClass =
     "text-FuzzyWuzzyBrown border-FuzzyWuzzyBrown hover:bg-FuzzyWuzzyBrown focus:bg-FuzzyWuzzyBrown disabled:cursor-not-allowed";
   const isAuthUser = localStorage.getItem("name") === username;
@@ -55,6 +55,8 @@ export const FavoriteDeleteButton: FC<IFavoriteDeleteButtonProps> = ({
   };
 
   const handleDeleteClick = async () => {
+    if (!isAuthUser) return;
+
     if (isAuthUser) await deleteArticle(slug);
     navigate(`/@${username}`);
   };

@@ -17,6 +17,7 @@ export const CommentsList: FC<ICommentsProps> = ({ comments }) => {
             createdAt={createdAt}
             username={author.username}
             image={author.image}
+            id={id}
           />
         ))}
     </>

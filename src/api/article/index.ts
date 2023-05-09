@@ -2,7 +2,7 @@ import { ICreateArticleDTO } from "./../dto/articles/index";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { IArticle, IArticlesDTO, ICreateArticle } from "../dto/articles";
 import { ITagsResponse } from "../dto/tags";
-import { ICommentsDTO } from "../dto/comments";
+import { ICommentsDTO, INewCommentDTO } from "../dto/comments";
 import { baseQuery } from "../base-query";
 import { IFavoriteArticleDTO } from "../dto/favorites";
 import { RootState } from "../../store";
@@ -28,10 +28,20 @@ interface IUpdateArticle {
   article: ICreateArticle;
 }
 
+interface ICreateComment {
+  slug: string;
+  comment: string;
+}
+
+interface IDeleteComment {
+  slug: string
+  id: number
+}
+
 export const articleApi = createApi({
   reducerPath: "articleApi",
   baseQuery,
-  tagTypes: ["Post"],
+  tagTypes: ["Post", 'Comment'],
   endpoints: (builder) => ({
     getArticles: builder.query<IArticlesDTO, IQueryParams>({
       query: ({ page, limit, tag, author, favorited }) => ({
@@ -75,6 +85,13 @@ export const articleApi = createApi({
     }),
     getComments: builder.query<ICommentsDTO, string>({
       query: (slug) => `/articles/${slug}/comments`,
+      transformResponse: ({ comments }: ICommentsDTO) => {
+        const sortedComments = comments.sort((a, b) => b.id - a.id);
+        return { comments: sortedComments };
+      },
+      providesTags: (result) => result ? [...result.comments.map(({id}) => ({type: 'Comment' as const, id})),
+      {type: 'Comment', id: 'LIST'}
+    ] : [{type: 'Comment', id: "LIST"}]
     }),
     getPopularTags: builder.query<ITagsResponse, void>({
       query: () => "/tags",
@@ -197,8 +214,22 @@ export const articleApi = createApi({
     deleteArticle: builder.mutation<void, string>({
       query: (slug) => ({
         url: `/articles/${slug}`,
+        method: "DELETE",
+      }),
+    }),
+    createComment: builder.mutation<INewCommentDTO, ICreateComment>({
+      query: ({ slug, comment }) => {
+        const body = { comment: { body: comment } };
+        return { url: `/articles/${slug}/comments`, method: "POST", body };
+      },
+      invalidatesTags: [{ type: "Comment" }],
+    }),
+    deleteComment: builder.mutation<void, IDeleteComment>({
+      query: ({slug,id}) => ({
+        url: `/articles/${slug}/comments/${id}`,
         method: 'DELETE'
-      })
+      }),
+      invalidatesTags: [{ type: "Comment" }],
     })
   }),
 });
@@ -213,7 +244,9 @@ export const {
   useUnLikeArticleMutation,
   useCreateArticleMutation,
   useUpdateArticleMutation,
-  useDeleteArticleMutation
+  useDeleteArticleMutation,
+  useCreateCommentMutation,
+  useDeleteCommentMutation
 } = articleApi;
 
 // import { createApi } from '@reduxjs/toolkit/query/react'

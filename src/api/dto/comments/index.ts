@@ -14,3 +14,7 @@ export interface IComment {
     following: boolean
   }
 }
+
+export interface INewCommentDTO {
+  body: string
+}

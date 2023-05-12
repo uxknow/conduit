@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { NavLink, useParams, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/auth";
+import { useAppSelector } from "../../hooks/redux";
 
 interface IFeedProps {
   activeTab?: string;
@@ -23,13 +23,13 @@ export const FeedToogle: FC<IFeedProps> = ({
     "text-lightGreen  border-b-2 border-lightGreen pointer-events-none";
   const { username } = useParams();
   const { pathname } = useLocation();
-  const isLoggedIn = useAuth();
+  const { isAuth } = useAppSelector((state) => state.user);
   const favorites = pathname.includes("favorites");
 
   return (
     <div>
       <ul className="flex items-center text-darkGray">
-        {isLoggedIn && !myArticles && (
+        {isAuth && !myArticles && (
           <li
             className={`py-2 px-4  ml-0.5 hover:no-underline  max-w-max ${
               !tag && activeTab === "your" && activeStyle

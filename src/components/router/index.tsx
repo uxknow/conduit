@@ -5,6 +5,7 @@ import { ProfilePage } from "../../pages/profile";
 import { ArticlePage } from "../../pages/article";
 import { AuthComponent } from "../../pages/auth";
 import { EditorPage } from "../../pages/editor";
+import { SettingsPage } from "../../pages/settings";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
             element: <EditorPage/>
           }
         ]
+      },
+      {
+        path: '/settings',
+        element: <SettingsPage/>
       }
     ],
   },

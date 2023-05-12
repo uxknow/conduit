@@ -1,12 +1,12 @@
-import { FC, useState, ReactElement } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { FC, useState, ReactElement, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Container } from "../container";
 import { MdLightMode, MdDarkMode, MdSettings } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import { useAuth } from "../../hooks/auth";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { UserAvatar } from "./user-avatar";
 import { useGetCurrUserQuery } from "../../api/auth";
+import { getUser, setIsAuth } from "../../store/slice/user";
 
 interface INavItems {
   title: string | ReactElement[];
@@ -16,22 +16,35 @@ interface INavItems {
 
 const navItems: INavItems[] = [
   { title: "Home", link: "/" },
-  { title: "Sign in", link: "/login"},
-  { title: "Sign up", link: "/register"},
+  { title: "Sign in", link: "/login" },
+  { title: "Sign up", link: "/register" },
 ];
 
 export const Header: FC = () => {
-  const isLoggedIn = useAuth();
-  const { user } = useAppSelector((state) => state.user);
+  const { isAuth } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [theme, setTheme] = useState("light");
 
-  const {data = null} = !user && isLoggedIn ? useGetCurrUserQuery() : {}
+  const { data, isError } = useGetCurrUserQuery(undefined, {
+    skip: !isAuth
+  });
+
+  useEffect(() => {
+    if (data) dispatch(getUser(data.user));
+
+    // if (isError) {
+    //   localStorage.clear();
+    //   dispatch(setIsAuth(false));
+    //   navigate("/");
+    // }
+  }, [dispatch, data, isError]);
 
   const authNavItems: INavItems[] = [
     { title: "Home", link: "/", key: "home" },
     {
       title: [
-        <div key='editor' className="flex items-center gap-1">
+        <div key="editor" className="flex items-center gap-1">
           <FiEdit />
           New Article
         </div>,
@@ -41,7 +54,7 @@ export const Header: FC = () => {
     },
     {
       title: [
-        <div key='settings' className="flex items-center gap-1">
+        <div key="settings" className="flex items-center gap-1">
           <MdSettings />
           Settings
         </div>,
@@ -52,12 +65,12 @@ export const Header: FC = () => {
     {
       title: [
         <UserAvatar
-          key='ptofile'
-          image={user?.image || data?.user.image || ''}
-          username={user?.username || data?.user.username || ''}
+          key="ptofile"
+          image={data?.user.image || ""}
+          username={data?.user.username || ""}
         />,
       ],
-      link: `/@${user?.username || data?.user.username}`,
+      link: `/@${data?.user.username}`,
       key: "profile",
     },
   ];
@@ -96,7 +109,7 @@ export const Header: FC = () => {
                   <MdLightMode className="text-black" />
                 )}
               </button>
-              {isLoggedIn ? (
+              {isAuth ? (
                 <ul className="flex gap-4">
                   {authNavItems.map(({ title, link, key }) => (
                     <li key={key}>

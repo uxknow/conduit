@@ -10,7 +10,7 @@ import { loginSchema, registerSchema } from "../../utils/yup";
 import { useLoginUserMutation, useRegisterUserMutation } from "../../api/auth";
 import { IAuthDTO } from "../../api/dto/auth";
 import { useAppDispatch } from "../../hooks/redux";
-import { getUser } from "../../store/slice/user";
+import { setIsAuth } from "../../store/slice/user";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 
 export interface IUserData {
@@ -80,11 +80,7 @@ export const AuthComponent: FC = () => {
         const response = (await registerUser(data)) as { data: IAuthDTO };
 
         if (response.data) {
-          dispatch(getUser(response.data.user));
-
-          localStorage.setItem("jwt", response.data.user.token);
-          localStorage.setItem("name", response.data.user.username);
-
+          dispatch(setIsAuth(true));
           navigate("/");
         }
       } catch (err) {
@@ -95,11 +91,7 @@ export const AuthComponent: FC = () => {
         const response = (await loginUser(data)) as { data: IAuthDTO };
 
         if (response.data) {
-          dispatch(getUser(response.data.user));
-
-          localStorage.setItem("jwt", response.data.user.token);
-          localStorage.setItem("name", response.data.user.username);
-
+          dispatch(setIsAuth(true));
           navigate("/");
         }
       } catch (err) {

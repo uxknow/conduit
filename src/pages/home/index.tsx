@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { Banner } from "../../components/banner";
 import { HomeContent } from "../../components/home-content";
-import { useAuth } from "../../hooks/auth";
+import { useAppSelector } from "../../hooks/redux";
 
 export const HomePage: FC = () => {
-  const isLoggedIn = useAuth()
+  const { isAuth } = useAppSelector((state) => state.user);
 
   return (
     <main>
-      {!isLoggedIn && <Banner />}
+      {!isAuth && <Banner />}
       <HomeContent />
     </main>
   );

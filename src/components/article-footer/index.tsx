@@ -4,8 +4,8 @@ import { ArticleActions } from "../article/article-actions";
 import { CommentsList } from "./comments-list";
 import { IComment } from "../../api/dto/comments";
 import { UnAuthCommentsMessage } from "./unauth-comment-message";
-import { useAuth } from "../../hooks/auth";
 import { AddComment } from "./add-comment";
+import { useAppSelector } from "../../hooks/redux";
 
 interface IArticleFooterProps {
   username: string;
@@ -13,9 +13,9 @@ interface IArticleFooterProps {
   favoritesCount: number | string;
   createdAt: Date;
   comments: IComment[];
-  slug: string
-  favorited: boolean
-  following: boolean
+  slug: string;
+  favorited: boolean;
+  following: boolean;
 }
 
 export const ArticleFooter: FC<IArticleFooterProps> = ({
@@ -26,9 +26,9 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
   comments,
   slug,
   favorited,
-  following
+  following,
 }) => {
-  const isLoggedIn = useAuth()
+  const { isAuth } = useAppSelector((state) => state.user);
 
   return (
     <Container className="flex flex-col items-center mb-8">
@@ -43,7 +43,7 @@ export const ArticleFooter: FC<IArticleFooterProps> = ({
         following={following}
       />
       <div className="mt-12 mb-4 text-montana w-full">
-        {isLoggedIn ? <AddComment image={image} slug={slug}/> : <UnAuthCommentsMessage/>}
+        {isAuth ? <AddComment slug={slug} /> : <UnAuthCommentsMessage />}
         <div className="flex flex-col gap-3 mt-5 max-w-3xl mx-auto">
           <CommentsList comments={comments} />
         </div>

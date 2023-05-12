@@ -10,14 +10,14 @@ import { useSearchParams } from "react-router-dom";
 import { PopularTags } from "../popular-tags";
 import { Paginate } from "../paginate";
 import { usePageParams } from "../../hooks/page-params";
-import { useAuth } from "../../hooks/auth";
+import { useAppSelector } from "../../hooks/redux";
 
 export const HomeContent: FC = () => {
-  const isLoggedIn = useAuth();
+  const { isAuth } = useAppSelector((state) => state.user);
   const [searchParams] = useSearchParams();
   const { page, setPage } = usePageParams();
   const [activeFeed, setActiveFeed] = useState(
-    isLoggedIn && !searchParams.get("tag") ? "your" : "global"
+    isAuth && !searchParams.get("tag") ? "your" : "global"
   );
   const limit = 10;
 
@@ -32,7 +32,7 @@ export const HomeContent: FC = () => {
     error: yourFeedError = null,
     isLoading: yourFeedIsLoading = false,
     isFetching: yourFeedIsFetching = false,
-  } = isLoggedIn ? useGetArticlesFeedQuery({ limit, page }) : {};
+  } = isAuth ? useGetArticlesFeedQuery({ limit, page }) : {};
 
   const articleCount =
     activeFeed === "your"

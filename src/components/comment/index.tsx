@@ -3,6 +3,7 @@ import { UserBadge } from "../user-badge";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDeleteCommentMutation } from "../../api/article";
 import { useParams } from "react-router-dom";
+import { useAppSelector } from "../../hooks/redux";
 
 interface ICommentProps {
   body: string;
@@ -19,8 +20,10 @@ export const Comment: FC<ICommentProps> = ({
   createdAt,
   id,
 }) => {
-  const isAuthUser = localStorage.getItem("name") === username;
   const { slug } = useParams();
+  const { user } = useAppSelector((state) => state.user);
+  const isCurrUser = user?.username === username;
+
   const [deleteComment] = useDeleteCommentMutation();
 
   const onDeleteCommentClick = async () => {
@@ -46,7 +49,7 @@ export const Comment: FC<ICommentProps> = ({
           createdAt={new Date(createdAt)}
           direction="row"
         />
-        {isAuthUser && (
+        {isCurrUser && (
           <RiDeleteBin6Line
             onClick={onDeleteCommentClick}
             className="text-base cursor-pointer text-midGray hover:text-black"

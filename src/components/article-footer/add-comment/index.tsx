@@ -6,37 +6,35 @@ import { ErrorMessage } from "../../error-message";
 import { useCreateCommentMutation } from "../../../api/article";
 
 interface IAddCommentProps {
-  image: string;
-  slug: string
+  slug: string;
 }
 
 interface ICommentData {
   comment: string;
 }
 
-const validateForm = ({comment}: ICommentData) => {
-  let error = {}
+const validateForm = ({ comment }: ICommentData) => {
+  let error = {};
   if (!comment) {
     error = {
       comment: {
-        message: 'This field is required'
-      }
-    }
+        message: "This field is required",
+      },
+    };
   }
-  return error
-}
+  return error;
+};
 
-export const AddComment: FC<IAddCommentProps> = ({ image, slug }) => {
-  // const user = useAppSelector((state) => state.user);
-  // console.log(user);
+export const AddComment: FC<IAddCommentProps> = ({ slug }) => {
+  const { user } = useAppSelector((state) => state.user);
 
-  const [createComment] = useCreateCommentMutation()
+  const [createComment] = useCreateCommentMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
   } = useForm<ICommentData>({
     defaultValues: {
       comment: "",
@@ -44,27 +42,29 @@ export const AddComment: FC<IAddCommentProps> = ({ image, slug }) => {
     resolver: (values) => {
       return {
         values,
-        errors: validateForm(values)
+        errors: validateForm(values),
       };
     },
   });
 
-  const onSubmit = async(data: ICommentData) => {
+  const onSubmit = async (data: ICommentData) => {
     if (!slug) {
-      return
+      return;
     }
 
     try {
-      await createComment({slug, comment: data.comment})
-      reset()
-    } catch(err) {
-      return err
+      await createComment({ slug, comment: data.comment });
+      reset();
+    } catch (err) {
+      return err;
     }
   };
 
   return (
     <div className="max-w-3xl mx-auto">
-      {errors.comment?.message && <ErrorMessage error={errors.comment.message} />}
+      {errors.comment?.message && (
+        <ErrorMessage error={errors.comment.message} />
+      )}
       <form
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="none"
@@ -78,7 +78,7 @@ export const AddComment: FC<IAddCommentProps> = ({ image, slug }) => {
         />
         <div className="flex justify-between items-center py-3 px-5 bg-neutral-100">
           <img
-            src={image}
+            src={(user && user.image) || ""}
             alt="avatar"
             className="h-8 w-8 object-cover rounded-full"
           />

@@ -1,17 +1,17 @@
 import { FC } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { useAuth } from "../../hooks/auth";
 import { MdSettings, MdEdit } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from "../../api/profile";
+import { useAppSelector } from "../../hooks/redux";
 
 interface IFollowButtonProps {
   username: string;
   following: boolean;
-  slug?: string
+  slug?: string;
 }
 
 export const FollowButton: FC<IFollowButtonProps> = ({
@@ -19,27 +19,32 @@ export const FollowButton: FC<IFollowButtonProps> = ({
   following,
   slug,
 }) => {
-  const isLoggedIn = useAuth();
+  const { isAuth } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
-  const isAuthUser = localStorage.getItem("name") === username;
+  const isCurrUser = user?.username === username;
   const { pathname } = useLocation();
 
   const [followUser, result] = useFollowUserMutation();
   const [unfollowUser, unfolllowResult] = useUnfollowUserMutation();
 
-
   const onFollowClick = () => {
-    if (!isAuthUser && !following) followUser(username);
-    if (!isAuthUser && following) unfollowUser(username);
+    if (!isAuth) {
+      navigate('/register')
+      return;
+    }
+    if (!isCurrUser && !following) followUser(username);
+    if (!isCurrUser && following) unfollowUser(username);
   };
 
   const navigateToSettings = () => {
-    if (isAuthUser && pathname.includes(`${username}`)) navigate("/settings");
+    if (isCurrUser && pathname.includes(`${username}`)) navigate("/settings");
   };
 
   const navigateToEditor = () => {
-    if(isAuthUser && pathname.includes("/article")) navigate(`/editor/${slug}`)
-  }
+    if (isCurrUser && pathname.includes("/article"))
+      navigate(`/editor/${slug}`);
+  };
 
   const followingClass = `${
     following && pathname.includes("/article") && "text-montana opacity-80"
@@ -51,19 +56,21 @@ export const FollowButton: FC<IFollowButtonProps> = ({
   return (
     <button
       onClick={() => {
-        navigateToSettings(), onFollowClick(), navigateToEditor()
+        navigateToSettings(), onFollowClick(), navigateToEditor();
       }}
       disabled={result.isLoading || unfolllowResult.isLoading}
       className={`h-7 flex items-center self-end my-auto text-nobel border border-nobel rounded-sm px-2 py-1 text-sm hover:bg-veryLightGray hover:text-white group focus:-outline-offset-2 active:bg-nobel/70 disabled:opacity-40 ${
         following && "bg-white"
       } ${unfollowingClass} ${followingClass}`}
     >
-      {isLoggedIn && isAuthUser && pathname.includes(`${username}`) ? (
+      {isAuth && isCurrUser && pathname.includes(`${username}`) ? (
         <>
           <MdSettings /> Edit Profile Settings
         </>
-      ) : isLoggedIn && isAuthUser && pathname.includes("/article") ? (
-        <><MdEdit/> Edit Article</>
+      ) : isAuth && isCurrUser && pathname.includes("/article") ? (
+        <>
+          <MdEdit /> Edit Article
+        </>
       ) : (
         <>
           <IoMdAdd

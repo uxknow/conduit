@@ -20,7 +20,11 @@ export const SubmitButton: FC<ISubmitButtonProps> = ({
   return (
     <button
       disabled={disabled}
-      className={`self-end ${!pathname.includes("/editor") && sizeBtn === btnSize.bg && "mt-4"} ${
+      className={`self-end ${
+        ((!pathname.includes("/editor") && sizeBtn === btnSize.bg) ||
+          !pathname.includes("/settings")) &&
+        "mt-4"
+      } ${
         sizeBtn === btnSize.bg
           ? "py-3 px-6 text-xl rounded-md"
           : "py-1 px-2 text-sm font-bold rounded-sm"

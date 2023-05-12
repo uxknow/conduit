@@ -4,10 +4,12 @@ import { RootState } from "../../store";
 export const baseQuery = fetchBaseQuery({
   baseUrl: "https://api.realworld.io/api",
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).user.user?.token || localStorage.getItem('jwt')
+    const token =
+      (getState() as RootState).user.user?.token ||
+      localStorage.getItem("token");
     if (token) {
-      headers.set('authorization', `Token ${token}`);
-     }
+      headers.set("authorization", `Token ${token}`);
+    }
     return headers;
-  }
-})
+  },
+});

@@ -22,6 +22,7 @@ export const ArticlePage: FC = () => {
   if (isLoading) {
     return <Container>Article is loading...</Container>;
   }
+
   return (
     <div className="text-montana">
       <Article

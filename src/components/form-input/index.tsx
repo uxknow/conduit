@@ -8,14 +8,14 @@ enum inputSize {
 }
 
 interface IFormInputProps extends ComponentPropsWithRef<"input"> {
-  error: string;
+  error?: string;
   sizeInput?: keyof typeof inputSize;
 }
 
 export const FormField: FC<IFormInputProps> = forwardRef<
   RefType,
   IFormInputProps
->(({ error, sizeInput = inputSize.bg, ...rest }, ref) => {
+>(({ error = '', sizeInput = inputSize.bg, ...rest }, ref) => {
   const borderColor = error
     ? "border-red-500 focus:border-red-500"
     : "focus:border-softBlue";

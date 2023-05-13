@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export const UnAuthCommentsMessage: FC = () => {
   return (
-    <p>
+    <p className='text-center'>
           <Link to="/login" className="text-lightGreen">
             Sign in
           </Link>{" "}

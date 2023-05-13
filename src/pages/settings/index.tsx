@@ -67,7 +67,7 @@ export const SettingsPage: FC = () => {
   };
 
   return (
-    <Container className="text-montana text-center mt-6">
+    <Container className="text-montana text-center mt-6 mb-6">
       {isLoading ? (
         <p>Loading...</p>
       ) : (

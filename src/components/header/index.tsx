@@ -1,12 +1,12 @@
 import { FC, useState, ReactElement, useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Container } from "../container";
 import { MdLightMode, MdDarkMode, MdSettings } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { UserAvatar } from "./user-avatar";
 import { useGetCurrUserQuery } from "../../api/auth";
-import { getUser, setIsAuth } from "../../store/slice/user";
+import { getUser} from "../../store/slice/user";
 
 interface INavItems {
   title: string | ReactElement[];
@@ -23,7 +23,6 @@ const navItems: INavItems[] = [
 export const Header: FC = () => {
   const { isAuth } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [theme, setTheme] = useState("light");
 
   const { data, isError } = useGetCurrUserQuery(undefined, {
@@ -33,11 +32,6 @@ export const Header: FC = () => {
   useEffect(() => {
     if (data) dispatch(getUser(data.user));
 
-    // if (isError) {
-    //   localStorage.clear();
-    //   dispatch(setIsAuth(false));
-    //   navigate("/");
-    // }
   }, [dispatch, data, isError]);
 
   const authNavItems: INavItems[] = [

@@ -30,9 +30,8 @@ export const authApi = createApi({
         };
       },
       transformResponse: ({ user }) => {
-        const { token, ...rest } = user;
+        const { token } = user;
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(rest));
         return user;
       },
     }),
@@ -46,9 +45,8 @@ export const authApi = createApi({
         };
       },
       transformResponse: ({ user }) => {
-        const { token, ...rest } = user;
+        const { token } = user;
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(rest));
         return user;
       },
     }),

@@ -23,7 +23,7 @@ const navItems: INavItems[] = [
 export const Header: FC = () => {
   const { isAuth } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const [theme, setTheme] = useState("light");
+ // const [theme, setTheme] = useState("light");
 
   const { data, isError } = useGetCurrUserQuery(undefined, {
     skip: !isAuth
@@ -69,16 +69,16 @@ export const Header: FC = () => {
     },
   ];
 
-  const toggleDarkMode = () => {
-    const html = document.querySelector("html");
-    if (html?.classList.contains("dark")) {
-      html.classList.remove("dark");
-      setTheme("light");
-    } else {
-      html?.classList.add("dark");
-      setTheme("dark");
-    }
-  };
+  // const toggleDarkMode = () => {
+  //   const html = document.querySelector("html");
+  //   if (html?.classList.contains("dark")) {
+  //     html.classList.remove("dark");
+  //     setTheme("light");
+  //   } else {
+  //     html?.classList.add("dark");
+  //     setTheme("dark");
+  //   }
+  // };
 
   return (
     <header className="bg-white dark:bg-neutral-900 dark:text-white">
@@ -92,7 +92,7 @@ export const Header: FC = () => {
               conduit
             </Link>
             <div className="flex gap-12 items-center ">
-              <button
+              {/* <button
                 type="button"
                 onClick={toggleDarkMode}
                 className="text-xl"
@@ -102,7 +102,7 @@ export const Header: FC = () => {
                 ) : (
                   <MdLightMode className="text-black" />
                 )}
-              </button>
+              </button> */}
               {isAuth ? (
                 <ul className="flex gap-4">
                   {authNavItems.map(({ title, link, key }) => (
